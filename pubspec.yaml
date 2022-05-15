@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.0.2
+  fluttericon: ^2.0.0
   github: ^9.2.0
   http: ^0.13.4
   oauth2: ^2.0.0

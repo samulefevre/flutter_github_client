@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_github_client/github_summary.dart';
 import 'package:github/github.dart';
 import 'package:window_to_front/window_to_front.dart';
 import 'github_login.dart';
@@ -34,22 +35,13 @@ class MyHomePage extends StatelessWidget {
     return GithubLoginWidget(
       builder: (context, httpClient) {
         WindowToFront.activate();
-        return FutureBuilder<CurrentUser>(
-          future: viewerDetail(httpClient.credentials.accessToken),
-          builder: (context, snapshot) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(title),
-              ),
-              body: Center(
-                child: Text(
-                  snapshot.hasData
-                      ? 'Hello ${snapshot.data!.login}!'
-                      : 'Retrieving viewer login details...',
-                ),
-              ),
-            );
-          },
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(title),
+          ),
+          body: GitHubSummary(
+            gitHub: _getGitHub(httpClient.credentials.accessToken),
+          ),
         );
       },
       githubClientId: dotenv.env['GITHUB_CLIENT_ID'] as String,
@@ -59,7 +51,6 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-Future<CurrentUser> viewerDetail(String accessToken) async {
-  final gitHub = GitHub(auth: Authentication.withToken(accessToken));
-  return gitHub.users.getCurrentUser();
+GitHub _getGitHub(String accessToken) {
+  return GitHub(auth: Authentication.withToken(accessToken));
 }
