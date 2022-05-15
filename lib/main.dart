@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:github/github.dart';
-
+import 'package:window_to_front/window_to_front.dart';
 import 'github_login.dart';
 
 Future<void> main() async {
@@ -33,6 +33,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GithubLoginWidget(
       builder: (context, httpClient) {
+        WindowToFront.activate();
         return FutureBuilder<CurrentUser>(
           future: viewerDetail(httpClient.credentials.accessToken),
           builder: (context, snapshot) {
